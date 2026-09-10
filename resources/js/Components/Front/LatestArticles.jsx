@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 import { IconArrowRight, IconCalendarEvent } from '@tabler/icons-react';
 
-export default function LatestArticles({ hideHeader = false }) {
+export default function LatestArticles({ posts = [], hideHeader = false }) {
     return (
         <section className="w-full px-4 py-16 sm:px-6 lg:px-8 bg-gray-50 dark:bg-surface-base transition-colors duration-200">
             <div className="max-w-7xl mx-auto">

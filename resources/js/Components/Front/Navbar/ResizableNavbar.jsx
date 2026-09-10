@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
   motion,
   AnimatePresence,
@@ -209,7 +209,7 @@ export const MobileNavToggle = ({ isOpen, onClick, visible }) => {
 };
 
 export const NavbarLogo = ({ visible }) => {
-  const { web_setting } = require('@inertiajs/react').usePage().props;
+  const { web_setting } = usePage().props;
 
   return (
     <a
