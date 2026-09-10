@@ -4,10 +4,11 @@ import {
     IconBrandYoutube, 
     IconBrandTiktok,
 } from '@tabler/icons-react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
 export default function FrontFooter() {
     const currentYear = new Date().getFullYear();
+    const { web_setting } = usePage().props;
 
     return (
         <footer className="w-full px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8 bg-gray-50 dark:bg-surface-base mt-12 transition-colors duration-200">
@@ -19,22 +20,28 @@ export default function FrontFooter() {
                     {/* Left Column: Brand & Socials */}
                     <div className="lg:w-1/3">
                         <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-                            Blue Murder
+                            {web_setting?.site_name || 'Blue Murder'}
                         </h2>
                         <p className="text-slate-200 text-sm mb-8 leading-relaxed max-w-sm">
-                            Wadah kreativitas dan kebersamaan Unit Kegiatan Mahasiswa Fakultas Teknik. Berkarya tanpa batas, bersaudara selamanya.
+                            {web_setting?.site_description || 'Wadah kreativitas dan kebersamaan Unit Kegiatan Mahasiswa Fakultas Teknik. Berkarya tanpa batas, bersaudara selamanya.'}
                         </p>
                         
                         <div className="flex items-center gap-4 text-slate-200">
-                            <a href="#" className="hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">
-                                <IconBrandInstagram stroke={1.5} size={28} />
-                            </a>
-                            <a href="#" className="hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">
-                                <IconBrandYoutube stroke={1.5} size={28} />
-                            </a>
-                            <a href="#" className="hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">
-                                <IconBrandTiktok stroke={1.5} size={28} />
-                            </a>
+                            {web_setting?.instagram_url && (
+                                <a href={web_setting.instagram_url} target="_blank" rel="noopener noreferrer" className="hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">
+                                    <IconBrandInstagram stroke={1.5} size={28} />
+                                </a>
+                            )}
+                            {web_setting?.youtube_url && (
+                                <a href={web_setting.youtube_url} target="_blank" rel="noopener noreferrer" className="hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">
+                                    <IconBrandYoutube stroke={1.5} size={28} />
+                                </a>
+                            )}
+                            {web_setting?.tiktok_url && (
+                                <a href={web_setting.tiktok_url} target="_blank" rel="noopener noreferrer" className="hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">
+                                    <IconBrandTiktok stroke={1.5} size={28} />
+                                </a>
+                            )}
                         </div>
                     </div>
 

@@ -3,28 +3,7 @@ import FrontLayout from '@/Layouts/FrontLayout';
 import { Head, Link } from '@inertiajs/react';
 import { IconHome, IconPhoto } from '@tabler/icons-react';
 
-export default function GaleriIndex() {
-    // Dummy albums
-    const albums = [
-        {
-            id: 1,
-            title: 'msad,masd',
-            slug: 'msad-masd',
-            image: null,
-        },
-        {
-            id: 2,
-            title: 'Kegiatan PORPROV 2023',
-            slug: 'kegiatan-porprov-2023',
-            image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800',
-        },
-        {
-            id: 3,
-            title: 'Pelatihan Kepemimpinan',
-            slug: 'pelatihan-kepemimpinan',
-            image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-        },
-    ];
+export default function GaleriIndex({ galleries }) {
 
     return (
         <FrontLayout title="Galeri Kegiatan">
@@ -52,31 +31,37 @@ export default function GaleriIndex() {
                     </div>
 
                     {/* Albums Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {albums.map((album) => (
-                            <Link href={`/galeri/${album.slug}`} key={album.id} className="group block">
-                                <div className="bg-gray-200 dark:bg-surface-muted rounded-2xl overflow-hidden aspect-[4/3] flex items-center justify-center relative mb-3 transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-lg shadow-sm border border-gray-100 dark:border-surface-muted/50">
-                                    {album.image ? (
-                                        <img 
-                                            src={album.image} 
-                                            alt={album.title} 
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                    ) : (
-                                        <div className="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
-                                            <IconPhoto size={48} stroke={1.5} className="mb-2" />
-                                            <span className="text-sm font-medium">Gambar tidak tersedia</span>
-                                        </div>
-                                    )}
-                                    {/* Overlay on hover */}
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                </div>
-                                <h3 className="font-semibold text-lg text-slate-800 dark:text-slate-200 group-hover:text-accent-primary transition-colors line-clamp-2">
-                                    {album.title}
-                                </h3>
-                            </Link>
-                        ))}
-                    </div>
+                    {galleries && galleries.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {galleries.map((album) => (
+                                <Link href={`/galeri/${album.slug}`} key={album.id} className="group block">
+                                    <div className="bg-gray-200 dark:bg-surface-muted rounded-2xl overflow-hidden aspect-[4/3] flex items-center justify-center relative mb-3 transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-lg shadow-sm border border-gray-100 dark:border-surface-muted/50">
+                                        {album.cover_image_url ? (
+                                            <img 
+                                                src={album.cover_image_url} 
+                                                alt={album.title} 
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
+                                                <IconPhoto size={48} stroke={1.5} className="mb-2" />
+                                                <span className="text-sm font-medium">Gambar tidak tersedia</span>
+                                            </div>
+                                        )}
+                                        {/* Overlay on hover */}
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                                    </div>
+                                    <h3 className="font-semibold text-lg text-slate-800 dark:text-slate-200 group-hover:text-accent-primary transition-colors line-clamp-2">
+                                        {album.title}
+                                    </h3>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-20 text-slate-500">
+                            Belum ada album galeri yang dipublikasikan.
+                        </div>
+                    )}
 
                 </div>
             </div>

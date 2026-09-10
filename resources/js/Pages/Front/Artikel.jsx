@@ -3,53 +3,7 @@ import FrontLayout from '@/Layouts/FrontLayout';
 import { Head, Link } from '@inertiajs/react';
 import { IconHome, IconArrowUpRight } from '@tabler/icons-react';
 
-export default function Artikel() {
-
-
-
-    // Dummy data for articles
-    const articles = [
-        {
-            id: 1,
-            title: 'Sertifikat Kelulusan Pelatihan AI Engineer pada Program IBM',
-            slug: 'sertifikat-kelulusan-pelatihan-ai-engineer',
-            excerpt: 'Dengan bangga diberikan kepada Muhammad Iqbal Faza telah berhasil menyelesaikan Pelatihan AI Engineer...',
-            image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-            hashtag: '#prestasi',
-            author: 'Super Admin BM',
-            date: '10 Sep 2026, 12.48'
-        },
-        {
-            id: 2,
-            title: 'Testing Implementasi Sistem Baru',
-            slug: 'testing-implementasi-sistem-baru',
-            excerpt: 'Proses pengujian sistem informasi terbaru untuk mendukung kegiatan administrasi organisasi mahasiswa...',
-            image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800',
-            hashtag: '#Testing',
-            author: 'Tim IT BM',
-            date: '28 Agu 2026, 20.29'
-        },
-        {
-            id: 3,
-            title: 'Pelatihan Dasar Kepemimpinan 2026',
-            slug: 'pelatihan-dasar-kepemimpinan-2026',
-            excerpt: 'Meningkatkan jiwa kepemimpinan mahasiswa Fakultas Teknik melalui serangkaian kegiatan yang menantang dan edukatif.',
-            image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800',
-            hashtag: '#kegiatan',
-            author: 'Humas BM',
-            date: '15 Agu 2026, 09.00'
-        },
-        {
-            id: 4,
-            title: 'Lomba Desain Logo Anniversary UKM',
-            slug: 'lomba-desain-logo-anniversary-ukm',
-            excerpt: 'Dalam rangka merayakan hari jadi, kami mengadakan lomba desain logo dengan total hadiah jutaan rupiah...',
-            image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800',
-            hashtag: '#lomba',
-            author: 'Panitia Anniv',
-            date: '01 Agu 2026, 14.30'
-        },
-    ];
+export default function Artikel({ posts }) {
 
     return (
         <FrontLayout title="Artikel">
@@ -76,50 +30,89 @@ export default function Artikel() {
                         </p>
                     </div>
 
-
-
                     {/* Grid Section */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {articles.map((article) => (
-                            <Link href={`/artikel/${article.slug}`} key={article.id} className="bg-white dark:bg-surface-muted rounded-[1.5rem] overflow-hidden shadow-sm border border-gray-100 dark:border-surface-muted/50 hover:shadow-md transition-shadow flex flex-col group block">
-                                {/* Image */}
-                                <div className="aspect-[4/3] w-full overflow-hidden relative bg-gray-100 dark:bg-surface-base">
-                                    <img 
-                                        src={article.image} 
-                                        alt={article.title} 
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                </div>
-
-                                {/* Content */}
-                                <div className="p-6 flex flex-col flex-1">
-                                    <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight mb-3 line-clamp-2">
-                                        {article.title}
-                                    </h3>
-                                    
-                                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">
-                                        {article.excerpt}
-                                    </p>
-                                    
-                                    <div className="mb-6">
-                                        <span className="inline-block px-3 py-1 bg-slate-100 dark:bg-surface-base text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-full">
-                                            {article.hashtag}
-                                        </span>
+                    {posts.data.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {posts.data.map((article) => (
+                                <Link href={`/artikel/${article.slug}`} key={article.id} className="bg-white dark:bg-surface-muted rounded-[1.5rem] overflow-hidden shadow-sm border border-gray-100 dark:border-surface-muted/50 hover:shadow-md transition-shadow flex flex-col group block">
+                                    {/* Image */}
+                                    <div className="aspect-[4/3] w-full overflow-hidden relative bg-gray-100 dark:bg-surface-base">
+                                        <img 
+                                            src={article.thumbnail_url || "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800"} 
+                                            alt={article.title} 
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
                                     </div>
-                                    
-                                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100 dark:border-surface-base/50">
-                                        <div className="text-xs text-slate-500 dark:text-slate-400">
-                                            {article.date}
+
+                                    {/* Content */}
+                                    <div className="p-6 flex flex-col flex-1">
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight mb-3 line-clamp-2">
+                                            {article.title}
+                                        </h3>
+                                        
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">
+                                            {article.excerpt || article.title}
+                                        </p>
+                                        
+                                        <div className="mb-6 flex flex-wrap gap-2">
+                                            {article.category && (
+                                                <span className="inline-block px-3 py-1 bg-accent-primary/10 text-accent-primary text-xs font-semibold rounded-full uppercase">
+                                                    {article.category.name}
+                                                </span>
+                                            )}
+                                            {article.hashtags?.slice(0, 2).map((tag) => (
+                                                <span key={tag.id} className="inline-block px-3 py-1 bg-slate-100 dark:bg-surface-base text-slate-600 dark:text-slate-300 text-xs font-semibold rounded-full">
+                                                    #{tag.name}
+                                                </span>
+                                            ))}
                                         </div>
                                         
-                                        <button className="w-8 h-8 rounded-full border border-gray-200 dark:border-surface-base flex items-center justify-center text-slate-400 group-hover:border-accent-primary group-hover:text-accent-primary group-hover:bg-accent-primary/5 transition-all">
-                                            <IconArrowUpRight size={16} stroke={2} />
-                                        </button>
+                                        <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-100 dark:border-surface-base/50">
+                                            <div className="text-xs text-slate-500 dark:text-slate-400">
+                                                {new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                            </div>
+                                            
+                                            <button className="w-8 h-8 rounded-full border border-gray-200 dark:border-surface-base flex items-center justify-center text-slate-400 group-hover:border-accent-primary group-hover:text-accent-primary group-hover:bg-accent-primary/5 transition-all">
+                                                <IconArrowUpRight size={16} stroke={2} />
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-20 text-slate-500">
+                            Belum ada artikel yang dipublikasikan.
+                        </div>
+                    )}
+
+                    {/* Pagination */}
+                    {posts.links && posts.links.length > 3 && (
+                        <div className="mt-12 flex justify-center">
+                            <nav className="flex flex-wrap gap-2">
+                                {posts.links.map((link, k) => (
+                                    link.url ? (
+                                        <Link
+                                            key={k}
+                                            href={link.url}
+                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                                link.active
+                                                    ? 'bg-accent-primary text-white'
+                                                    : 'bg-white dark:bg-surface-muted text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-surface-base border border-slate-200 dark:border-surface-muted/50'
+                                            }`}
+                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                        />
+                                    ) : (
+                                        <span
+                                            key={k}
+                                            className="px-4 py-2 rounded-lg text-sm font-medium bg-slate-50 dark:bg-surface-base text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-surface-muted/50 cursor-not-allowed"
+                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                        />
+                                    )
+                                ))}
+                            </nav>
+                        </div>
+                    )}
                 </div>
 
 

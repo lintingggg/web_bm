@@ -112,7 +112,7 @@ export const NavItems = ({ items, className, onItemClick, visible }) => {
           </a>
           
           {item.subItems && (
-            <div className="absolute left-0 top-full hidden group-hover:block pt-2 w-max">
+            <div className="absolute left-0 top-full hidden group-hover:block pt-6 w-max -mt-2">
               <div className="flex flex-col bg-white dark:bg-surface-muted shadow-lg rounded-xl overflow-hidden min-w-[200px] border border-neutral-100 dark:border-surface-muted/50">
                 {item.subItems.map((sub, sIdx) => (
                   <Link
@@ -209,13 +209,15 @@ export const MobileNavToggle = ({ isOpen, onClick, visible }) => {
 };
 
 export const NavbarLogo = ({ visible }) => {
+  const { web_setting } = require('@inertiajs/react').usePage().props;
+
   return (
     <a
       href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal"
     >
       <img
-        src="/assets/icon_bm.webp"
+        src={web_setting?.logo_url || "/assets/icon_bm.webp"}
         alt="logo"
         className="w-8 h-auto"
       />
@@ -223,7 +225,7 @@ export const NavbarLogo = ({ visible }) => {
         "font-bold text-xl",
         visible ? "text-black dark:text-text-primary" : "text-white"
       )}>
-        Blue Murder
+        {web_setting?.site_name || "Blue Murder"}
       </span>
     </a>
   );

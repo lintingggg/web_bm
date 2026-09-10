@@ -3,9 +3,11 @@
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
+import { Link } from "@inertiajs/react";
 
-export function ElasticGallery() {
-  const items = [
+export function ElasticGallery({ galleries = [] }) {
+  // If no galleries provided, use fallback data
+  const fallbackItems = [
     {
       id: "01",
       title: "Pentas Seni",
@@ -27,23 +29,20 @@ export function ElasticGallery() {
       src: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800",
       alt: "Diskusi Publik",
     },
-    {
-      id: "04",
-      title: "Bakti Sosial",
-      category: "Sosial",
-      src: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=800",
-      alt: "Bakti Sosial",
-    },
-    {
-      id: "05",
-      title: "Malam Keakraban",
-      category: "Persaudaraan",
-      src: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800",
-      alt: "Malam Keakraban",
-    },
   ];
 
-  const [activeId, setActiveId] = useState("03");
+  const items = galleries.length > 0 
+    ? galleries.map((g, index) => ({
+        id: String(g.id),
+        title: g.title,
+        category: "Galeri",
+        src: g.cover_image_url || fallbackItems[index % fallbackItems.length].src,
+        alt: g.title,
+        href: `/galeri/${g.slug}`
+      }))
+    : fallbackItems;
+
+  const [activeId, setActiveId] = useState(items[0]?.id || "01");
 
   return (
     <div className="w-full">
@@ -113,10 +112,10 @@ export function ElasticGallery() {
                 </h3>
 
                 {/* Call to Action */}
-                <div className="mt-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/80 md:mt-4 md:text-sm">
+                <Link href={item.href} className="mt-2 flex w-max items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/80 hover:text-white md:mt-4 md:text-sm">
                   Lihat Foto{" "}
                   <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
-                </div>
+                </Link>
               </div>
 
               {/* Inactive Content: Vertical Text (Desktop) / Short Label (Mobile) */}

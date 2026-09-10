@@ -4,59 +4,14 @@ import { Head, Link } from '@inertiajs/react';
 import { IconHome, IconCalendarEvent, IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function GaleriDetail({ slug }) {
+export default function GaleriDetail({ gallery }) {
     // Lightbox state
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // Dummy photos for the album
-    const photos = [
-        {
-            id: 1,
-            title: 'Closing Ceremony PORPROV VII Jawa Timur 2023 - di Std Gajah Mada',
-            date: '18 SEP 2026 • 00.00',
-            image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1200',
-            aspect: 'aspect-[4/3]' // landscape
-        },
-        {
-            id: 2,
-            title: 'Potret Keseruan Peserta',
-            date: '18 SEP 2026 • 10.30',
-            image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
-            aspect: 'aspect-[3/4]' // portrait
-        },
-        {
-            id: 3,
-            title: 'Suasana Pelatihan Kepemimpinan',
-            date: '19 SEP 2026 • 13.00',
-            image: 'https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&q=80&w=1200',
-            aspect: 'aspect-square' // square
-        },
-        {
-            id: 4,
-            title: 'Rapat Koordinasi Evaluasi',
-            date: '20 SEP 2026 • 09.00',
-            image: 'https://images.unsplash.com/photo-1556761175-5972d50c26c5?auto=format&fit=crop&q=80&w=1200',
-            aspect: 'aspect-[16/9]' // wide
-        },
-        {
-            id: 5,
-            title: 'Persiapan Teknis Lapangan',
-            date: '20 SEP 2026 • 14.00',
-            image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800',
-            aspect: 'aspect-[3/4]' // portrait
-        },
-        {
-            id: 6,
-            title: 'Serah Terima Jabatan & Hadiah',
-            date: '21 SEP 2026 • 16.00',
-            image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=1200',
-            aspect: 'aspect-[4/3]' // landscape
-        },
-    ];
+    const photos = gallery.images || [];
 
-    // Dummy album info based on slug
-    const albumTitle = slug === 'msad-masd' ? 'msad,masd' : slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    const albumDescription = 'Koleksi dokumentasi kegiatan yang meriah dan penuh semangat. Mengabadikan setiap momen kebersamaan dan aksi di lapangan.';
+    const albumTitle = gallery.title;
+    const albumDescription = gallery.description || '';
 
     return (
         <FrontLayout title={albumTitle}>
@@ -90,35 +45,37 @@ export default function GaleriDetail({ slug }) {
                     </div>
 
                     {/* Photos Masonry Grid */}
-                    <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                        {photos.map((photo) => (
-                            <div 
-                                key={photo.id} 
-                                onClick={() => setSelectedImage(photo)}
-                                className={`group relative bg-black rounded-3xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-surface-muted/50 break-inside-avoid ${photo.aspect}`}
-                            >
-                                <img 
-                                    src={photo.image} 
-                                    alt={photo.title} 
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                                />
-                                
-                                {/* Overlay Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                
-                                {/* Photo Meta Info */}
-                                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                    <div className="flex items-center gap-2 text-blue-200 text-sm font-semibold mb-2">
-                                        <IconCalendarEvent size={18} />
-                                        {photo.date}
+                    {photos.length > 0 ? (
+                        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                            {photos.map((photo) => (
+                                <div 
+                                    key={photo.id} 
+                                    onClick={() => setSelectedImage(photo)}
+                                    className={`group relative bg-black rounded-3xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-surface-muted/50 break-inside-avoid aspect-[4/3]`}
+                                >
+                                    <img 
+                                        src={photo.image_url} 
+                                        alt={photo.title || albumTitle} 
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                                    />
+                                    
+                                    {/* Overlay Gradient */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    
+                                    {/* Photo Meta Info */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                        <h3 className="text-white text-xl md:text-2xl font-bold line-clamp-2 leading-tight">
+                                            {photo.title || albumTitle}
+                                        </h3>
                                     </div>
-                                    <h3 className="text-white text-xl md:text-2xl font-bold line-clamp-2 leading-tight">
-                                        {photo.title}
-                                    </h3>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-20 text-slate-500">
+                            Belum ada foto dalam galeri ini.
+                        </div>
+                    )}
 
                 </div>
             </div>
@@ -154,8 +111,8 @@ export default function GaleriDetail({ slug }) {
                             onClick={(e) => e.stopPropagation()} // Prevent click from closing when clicking on image
                         >
                             <img 
-                                src={selectedImage.image} 
-                                alt={selectedImage.title}
+                                src={selectedImage.image_url} 
+                                alt={selectedImage.title || albumTitle}
                                 className="max-h-[75vh] w-auto object-contain rounded-lg shadow-2xl"
                             />
                             

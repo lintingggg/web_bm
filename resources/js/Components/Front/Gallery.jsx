@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ElasticGallery } from "@/Components/ui/elastic-gallery";
 
-export default function Gallery() {
+export default function Gallery({ galleries = [] }) {
   return (
     <section id="galeri" className="w-full self-start py-16 bg-white dark:bg-surface-base transition-colors duration-200 border-t border-neutral-100 dark:border-surface-muted/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,7 +14,7 @@ export default function Gallery() {
             </p>
         </div>
 
-        <ElasticGallery />
+        <ElasticGallery galleries={galleries} />
       </div>
     </section>
   );

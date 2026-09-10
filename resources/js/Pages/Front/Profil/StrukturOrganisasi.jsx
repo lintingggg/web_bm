@@ -3,9 +3,11 @@ import FrontLayout from '@/Layouts/FrontLayout';
 import { Head, Link } from '@inertiajs/react';
 import { IconHome } from '@tabler/icons-react';
 
-export default function StrukturOrganisasi() {
+export default function StrukturOrganisasi({ page }) {
+    const pageTitle = page ? page.title : 'Struktur Organisasi';
+
     return (
-        <FrontLayout title="Struktur Organisasi">
+        <FrontLayout title={pageTitle}>
             <div className="pt-28 pb-20 min-h-screen bg-gray-50 dark:bg-surface-base text-slate-800 dark:text-slate-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
@@ -18,24 +20,31 @@ export default function StrukturOrganisasi() {
                         <span>&gt;</span>
                         <span>Profil UKM</span>
                         <span>&gt;</span>
-                        <span className="font-semibold text-slate-800 dark:text-slate-200">Struktur Organisasi</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{pageTitle}</span>
                     </div>
 
                     {/* Header Section */}
                     <div className="mb-10">
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
-                            Struktur Organisasi
+                            {pageTitle}
                         </h1>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl">
-                            Bagan dan susunan kepengurusan struktural Unit Kegiatan Mahasiswa Fakultas Teknik Blue Murder.
-                        </p>
+                        {/* description if needed */}
                     </div>
 
                     {/* Main Content Box */}
-                    <div className="bg-white dark:bg-surface-muted rounded-2xl border border-gray-200 dark:border-surface-muted/50 p-8 md:p-12 shadow-sm min-h-[300px] flex items-center justify-center text-center">
-                        <p className="text-gray-500 dark:text-gray-400 text-lg">
-                            (Data Struktur Organisasi Belum Tersedia)
-                        </p>
+                    <div className="bg-white dark:bg-surface-muted rounded-2xl border border-gray-200 dark:border-surface-muted/50 p-8 md:p-12 shadow-sm min-h-[300px]">
+                        {page && page.content ? (
+                            <div 
+                                className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: page.content }}
+                            />
+                        ) : (
+                            <div className="flex items-center justify-center h-full min-h-[200px]">
+                                <p className="text-gray-500 dark:text-gray-400 text-lg">
+                                    (Data Belum Tersedia)
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                 </div>
