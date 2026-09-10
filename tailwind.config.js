@@ -20,6 +20,12 @@ export default {
                 'card-dark': 'hsl(220 18% 13%)',
                 'border-dark': 'hsl(220 15% 18%)',
                 'sidebar-dark': 'hsl(220 22% 8%)',
+                // New UKMFT Blue Murder tokens
+                'surface-base': '#011F6D',
+                'surface-muted': '#045497',
+                'text-secondary': '#5189C6',
+                'accent-primary': '#0ea5e9', // Blue dominant
+                'accent-orange': '#FFAA4D', // Subtle orange accent
             },
             fontFamily: {
                 sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],

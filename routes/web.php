@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontController;
 use App\Http\Controllers\Admin\WebSettingController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\RolePermissionController;
@@ -19,7 +20,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::redirect('/', '/dashboard');
+Route::get('/', [FrontController::class, 'index'])->name('home');
+Route::get('/artikel', [FrontController::class, 'artikel'])->name('artikel');
+Route::get('/artikel/{slug}', [FrontController::class, 'artikelDetail'])->name('artikel.detail');
+Route::get('/galeri', [FrontController::class, 'galeri'])->name('galeri');
+Route::get('/galeri/{slug}', [FrontController::class, 'galeriDetail'])->name('galeri.detail');
+
+Route::get('/profil/tentang-kami', [FrontController::class, 'tentangKami'])->name('profil.tentang');
+Route::get('/profil/struktur-organisasi', [FrontController::class, 'strukturOrganisasi'])->name('profil.struktur');
+Route::get('/profil/logo-bm', [FrontController::class, 'logoBM'])->name('profil.logo');
 
 Route::post('/contact/submit', [ContactFormController::class, 'store'])
     ->middleware(['throttle:contact-submission'])
