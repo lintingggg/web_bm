@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +22,8 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Super Admin',
-            'email' => 'superadmin@cmslara.test',
+            'email' => env('SUPERADMIN_EMAIL', 'superadmin@cmslara.test'),
+            'password' => Hash::make(env('SUPERADMIN_PASSWORD', 'password')),
             'phone_number' => '+6281111111111',
             'gender' => 'male',
             'role' => 'superadmin',
@@ -30,7 +32,8 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Admin CMS',
-            'email' => 'admin@cmslara.test',
+            'email' => env('ADMIN_EMAIL', 'admin@cmslara.test'),
+            'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
             'phone_number' => '+6282222222222',
             'gender' => 'female',
             'role' => 'admin',
@@ -39,7 +42,8 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Editor CMS',
-            'email' => 'editor@cmslara.test',
+            'email' => env('EDITOR_EMAIL', 'editor@cmslara.test'),
+            'password' => Hash::make(env('EDITOR_PASSWORD', 'password')),
             'phone_number' => '+6283333333333',
             'gender' => 'other',
             'role' => 'editor',
