@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\BmLogoController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SocialMediaPostController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
@@ -104,6 +105,12 @@ Route::middleware(['auth', 'verified', 'log.admin.activity'])->group(function ()
     Route::post('/agendas', [\App\Http\Controllers\Admin\AgendaController::class, 'store'])->middleware('permission:settings.web.update')->name('agendas.store');
     Route::put('/agendas/{agenda}', [\App\Http\Controllers\Admin\AgendaController::class, 'update'])->middleware('permission:settings.web.update')->name('agendas.update');
     Route::delete('/agendas/{agenda}', [\App\Http\Controllers\Admin\AgendaController::class, 'destroy'])->middleware('permission:settings.web.update')->name('agendas.destroy');
+
+    // Social Media Embeds
+    Route::get('/social-media-posts', [SocialMediaPostController::class, 'index'])->middleware('permission:settings.web.view')->name('social-media-posts.index');
+    Route::post('/social-media-posts', [SocialMediaPostController::class, 'store'])->middleware('permission:settings.web.update')->name('social-media-posts.store');
+    Route::put('/social-media-posts/{socialMediaPost}', [SocialMediaPostController::class, 'update'])->middleware('permission:settings.web.update')->name('social-media-posts.update');
+    Route::delete('/social-media-posts/{socialMediaPost}', [SocialMediaPostController::class, 'destroy'])->middleware('permission:settings.web.update')->name('social-media-posts.destroy');
 
     Route::get('/gallery-images', [GalleryImageController::class, 'index'])->middleware('permission:gallery-images.view')->name('gallery-images.index');
     Route::post('/gallery-images', [GalleryImageController::class, 'store'])->middleware('permission:gallery-images.create')->name('gallery-images.store');

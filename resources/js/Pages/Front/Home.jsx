@@ -5,8 +5,9 @@ import About from '@/Components/Front/About';
 import LatestArticles from '@/Components/Front/LatestArticles';
 import Agenda from '@/Components/Front/Agenda';
 import Gallery from '@/Components/Front/Gallery';
+import SocialMediaEmbed from '@/Components/Front/SocialMediaEmbed';
 
-export default function Home({ latestPosts, latestGalleries, heroSections = [], aboutSection, agendas = {} }) {
+export default function Home({ latestPosts, latestGalleries, heroSections = [], aboutSection, agendas = {}, socialMediaPosts = [] }) {
     const { webSetting } = usePage().props;
 
     // Use heroSections if available, otherwise fallback to default
@@ -51,6 +52,9 @@ export default function Home({ latestPosts, latestGalleries, heroSections = [], 
 
             {/* Galeri Section */}
             <Gallery galleries={latestGalleries} />
+
+            {/* Sosial Media Embed Section */}
+            <SocialMediaEmbed posts={socialMediaPosts} />
         </FrontLayout>
     );
 }

@@ -25,6 +25,7 @@ import {
     User,
     Users,
     ShieldCheck,
+    Share2,
     X,
     Globe,
 } from 'lucide-react';
@@ -103,6 +104,17 @@ const sidebarMenu = [
                 icon: GalleryHorizontal,
                 routeName: 'hero-sections.index',
                 active: ['hero-sections.*'],
+            },
+        ],
+    },
+    {
+        group: 'Sosial Media',
+        items: [
+            {
+                label: 'Kelola Embed',
+                icon: Share2,
+                routeName: 'social-media-posts.index',
+                active: ['social-media-posts.*'],
             },
         ],
     },

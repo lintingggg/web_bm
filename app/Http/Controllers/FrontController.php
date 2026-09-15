@@ -8,6 +8,7 @@ use App\Models\AboutSection;
 use App\Models\Agenda;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\SocialMediaPost;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -56,12 +57,19 @@ class FrontController extends Controller
             ->take(4)
             ->get();
 
+        $socialMediaPosts = SocialMediaPost::where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderByDesc('created_at')
+            ->take(3)
+            ->get();
+
         return Inertia::render('Front/Home', [
             'heroSections' => $heroSections,
             'aboutSection' => $aboutSection,
             'agendas' => (object)$agendasByDate,
             'latestPosts' => $latestPosts,
             'latestGalleries' => $latestGalleries,
+            'socialMediaPosts' => $socialMediaPosts,
         ]);
     }
 
