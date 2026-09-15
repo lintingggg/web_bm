@@ -54,6 +54,8 @@ class GalleryImageController extends Controller
                 'title' => $image->title,
                 'caption' => $image->caption,
                 'alt_text' => $image->alt_text,
+                'type' => $image->type,
+                'youtube_url' => $image->youtube_url,
                 'image_url' => $image->image_url,
                 'is_watermarked' => $image->is_watermarked,
                 'sort_order' => $image->sort_order,
@@ -102,18 +104,23 @@ class GalleryImageController extends Controller
     ): RedirectResponse {
         $validated = $request->validated();
 
-        $validated['image_path'] = $imageService->storeOptimized(
-            $request->file('image'),
-            'gallery-images',
-            (bool) ($validated['use_watermark'] ?? false),
-        );
+        if ($validated['type'] === 'image' && $request->hasFile('image')) {
+            $validated['image_path'] = $imageService->storeOptimized(
+                $request->file('image'),
+                'gallery-images',
+                (bool) ($validated['use_watermark'] ?? false),
+            );
+        } else if ($validated['type'] === 'youtube') {
+            $validated['image_path'] = null; // or generate thumbnail
+        }
+
         $validated['user_id'] = $request->user()->id;
         $validated['is_watermarked'] = (bool) ($validated['use_watermark'] ?? false);
 
         unset($validated['image'], $validated['use_watermark']);
         GalleryImage::create($validated);
 
-        return back()->with('success', 'Gambar gallery berhasil ditambahkan.');
+        return back()->with('success', 'Media gallery berhasil ditambahkan.');
     }
 
     public function update(
@@ -123,17 +130,26 @@ class GalleryImageController extends Controller
     ): RedirectResponse {
         $validated = $request->validated();
 
-        if ($request->hasFile('image')) {
+        if ($validated['type'] === 'image') {
+            $validated['youtube_url'] = null;
+            if ($request->hasFile('image')) {
+                if ($galleryImage->image_path && Storage::disk('public')->exists($galleryImage->image_path)) {
+                    Storage::disk('public')->delete($galleryImage->image_path);
+                }
+
+                $validated['image_path'] = $imageService->storeOptimized(
+                    $request->file('image'),
+                    'gallery-images',
+                    (bool) ($validated['use_watermark'] ?? false),
+                );
+                $validated['is_watermarked'] = (bool) ($validated['use_watermark'] ?? false);
+            }
+        } else if ($validated['type'] === 'youtube') {
             if ($galleryImage->image_path && Storage::disk('public')->exists($galleryImage->image_path)) {
                 Storage::disk('public')->delete($galleryImage->image_path);
             }
-
-            $validated['image_path'] = $imageService->storeOptimized(
-                $request->file('image'),
-                'gallery-images',
-                (bool) ($validated['use_watermark'] ?? false),
-            );
-            $validated['is_watermarked'] = (bool) ($validated['use_watermark'] ?? false);
+            $validated['image_path'] = null;
+            $validated['is_watermarked'] = false;
         }
 
         if ($galleryImage->user_id === null) {
@@ -143,7 +159,7 @@ class GalleryImageController extends Controller
         unset($validated['image'], $validated['use_watermark']);
         $galleryImage->update($validated);
 
-        return back()->with('success', 'Gambar gallery berhasil diperbarui.');
+        return back()->with('success', 'Media gallery berhasil diperbarui.');
     }
 
     public function destroy(GalleryImage $galleryImage): RedirectResponse

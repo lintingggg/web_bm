@@ -11,6 +11,8 @@ class GalleryImage extends Model
     protected $fillable = [
         'gallery_id',
         'user_id',
+        'type',
+        'youtube_url',
         'title',
         'caption',
         'alt_text',

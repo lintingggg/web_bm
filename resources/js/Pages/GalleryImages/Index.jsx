@@ -10,6 +10,7 @@ import {
     Trash2,
     UserCircle2,
     XCircle,
+    Video,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import Select from 'react-select';
@@ -17,6 +18,8 @@ import Swal from 'sweetalert2';
 
 const defaultData = {
     gallery_id: '',
+    type: 'image',
+    youtube_url: '',
     title: '',
     caption: '',
     alt_text: '',
@@ -111,6 +114,8 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
                     form.setData('sort_order', 0);
                     form.setData('is_active', true);
                     form.setData('use_watermark', false);
+                    form.setData('type', 'image');
+                    form.setData('youtube_url', '');
                     setEditingItem(null);
                 },
             });
@@ -125,6 +130,8 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
                 form.setData('sort_order', 0);
                 form.setData('is_active', true);
                 form.setData('use_watermark', false);
+                form.setData('type', 'image');
+                form.setData('youtube_url', '');
             },
         });
     };
@@ -159,6 +166,8 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
         setEditingItem(item);
         form.setData({
             gallery_id: String(item.gallery_id),
+            type: item.type ?? 'image',
+            youtube_url: item.youtube_url ?? '',
             title: item.title ?? '',
             caption: item.caption ?? '',
             alt_text: item.alt_text ?? '',
@@ -176,6 +185,8 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
         form.setData('sort_order', 0);
         form.setData('is_active', true);
         form.setData('use_watermark', false);
+        form.setData('type', 'image');
+        form.setData('youtube_url', '');
         form.clearErrors();
     };
 
@@ -250,7 +261,36 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">Judul Gambar (opsional)</label>
+                                <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">Tipe Media</label>
+                                <div className="flex gap-4">
+                                    <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                                        <input
+                                            type="radio"
+                                            name="type"
+                                            value="image"
+                                            checked={form.data.type === 'image'}
+                                            onChange={(e) => form.setData('type', e.target.value)}
+                                            className="text-primary focus:ring-primary dark:bg-slate-900"
+                                        />
+                                        Gambar Upload
+                                    </label>
+                                    <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                                        <input
+                                            type="radio"
+                                            name="type"
+                                            value="youtube"
+                                            checked={form.data.type === 'youtube'}
+                                            onChange={(e) => form.setData('type', e.target.value)}
+                                            className="text-primary focus:ring-primary dark:bg-slate-900"
+                                        />
+                                        Video YouTube
+                                    </label>
+                                </div>
+                                <ErrorText message={form.errors.type} />
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">Judul Media (opsional)</label>
                                 <input
                                     type="text"
                                     placeholder="Contoh: Foto Pembukaan Acara"
@@ -285,17 +325,31 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
                                 <ErrorText message={form.errors.caption} />
                             </div>
 
-                            <div className="space-y-1">
-                                <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">File Gambar (jpg/png/webp, max 2MB)</label>
-                                <input
-                                    type="file"
-                                    accept=".jpg,.jpeg,.png,.webp"
-                                    onChange={(event) => form.setData('image', event.target.files?.[0] ?? null)}
-                                    className="w-full rounded-[0.625rem] border border-slate-300 bg-white text-sm file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-2 file:text-white dark:border-border-dark dark:bg-slate-900/30"
-                                />
-                                <ErrorText message={form.errors.image} />
-                                {editingItem?.image_url && <img src={editingItem.image_url} alt={editingItem.title || 'Gallery image'} className="mt-2 h-24 w-full rounded-md object-cover" />}
-                            </div>
+                            {form.data.type === 'image' ? (
+                                <div className="space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">File Gambar (jpg/png/webp, max 2MB)</label>
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png,.webp"
+                                        onChange={(event) => form.setData('image', event.target.files?.[0] ?? null)}
+                                        className="w-full rounded-[0.625rem] border border-slate-300 bg-white text-sm file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-2 file:text-white dark:border-border-dark dark:bg-slate-900/30"
+                                    />
+                                    <ErrorText message={form.errors.image} />
+                                    {editingItem?.type === 'image' && editingItem?.image_url && <img src={editingItem.image_url} alt={editingItem.title || 'Gallery image'} className="mt-2 h-24 w-full rounded-md object-cover" />}
+                                </div>
+                            ) : (
+                                <div className="space-y-1">
+                                    <label className="text-xs font-semibold text-slate-600 dark:text-slate-300">URL Video YouTube</label>
+                                    <input
+                                        type="url"
+                                        placeholder="Contoh: https://youtube.com/watch?v=..."
+                                        value={form.data.youtube_url}
+                                        onChange={(event) => form.setData('youtube_url', event.target.value)}
+                                        className="w-full rounded-[0.625rem] border-slate-300 bg-white text-sm shadow-sm focus:border-primary focus:ring-primary/30 dark:border-border-dark dark:bg-slate-900/30"
+                                    />
+                                    <ErrorText message={form.errors.youtube_url} />
+                                </div>
+                            )}
 
                             <div className="flex items-center gap-2">
                                 <input
@@ -415,7 +469,17 @@ export default function GalleryImagesIndex({ images, galleries, filters, stats }
                                         <tr key={item.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/30">
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
-                                                    {item.image_url ? <img src={item.image_url} alt={item.alt_text || item.title || 'Gallery image'} className="h-12 w-16 rounded-md object-cover" /> : <span className="inline-flex h-12 w-16 items-center justify-center rounded-md bg-slate-100 text-slate-400 dark:bg-slate-800"><ImageIcon className="h-4 w-4" /></span>}
+                                                    {item.type === 'youtube' ? (
+                                                        <span className="inline-flex h-12 w-16 items-center justify-center rounded-md bg-rose-50 text-rose-500 dark:bg-rose-900/30">
+                                                            <Video className="h-6 w-6" />
+                                                        </span>
+                                                    ) : item.image_url ? (
+                                                        <img src={item.image_url} alt={item.alt_text || item.title || 'Gallery image'} className="h-12 w-16 rounded-md object-cover" />
+                                                    ) : (
+                                                        <span className="inline-flex h-12 w-16 items-center justify-center rounded-md bg-slate-100 text-slate-400 dark:bg-slate-800">
+                                                            <ImageIcon className="h-4 w-4" />
+                                                        </span>
+                                                    )}
                                                     <div className="min-w-0">
                                                         <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{item.title || '-'}</p>
                                                         <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.alt_text || 'Tanpa alt text'}</p>

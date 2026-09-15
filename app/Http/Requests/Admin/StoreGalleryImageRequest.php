@@ -23,10 +23,12 @@ class StoreGalleryImageRequest extends FormRequest
     {
         return [
             'gallery_id' => ['required', 'integer', 'exists:galleries,id'],
+            'type' => ['required', 'string', 'in:image,youtube'],
+            'youtube_url' => ['nullable', 'required_if:type,youtube', 'url', 'max:255'],
             'title' => ['nullable', 'string', 'max:160'],
             'caption' => ['nullable', 'string', 'max:2000'],
             'alt_text' => ['nullable', 'string', 'max:160'],
-            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'image' => ['nullable', 'required_if:type,image', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'use_watermark' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['required', 'boolean'],

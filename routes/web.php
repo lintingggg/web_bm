@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\GalleryImageController;
 use App\Http\Controllers\Admin\HeroSectionController;
+use App\Http\Controllers\Admin\AboutSectionController;
+use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OrganizationStructureController;
 use App\Http\Controllers\Admin\BmLogoController;

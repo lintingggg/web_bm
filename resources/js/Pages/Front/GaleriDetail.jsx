@@ -3,6 +3,19 @@ import FrontLayout from '@/Layouts/FrontLayout';
 import { Head, Link } from '@inertiajs/react';
 import { IconHome, IconCalendarEvent, IconX } from '@tabler/icons-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { IconVideo } from '@tabler/icons-react';
+
+const getYoutubeId = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+};
+
+const getYoutubeThumbnail = (url) => {
+    const id = getYoutubeId(url);
+    return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+};
 
 export default function GaleriDetail({ gallery }) {
     // Lightbox state
@@ -54,10 +67,18 @@ export default function GaleriDetail({ gallery }) {
                                     className={`group relative bg-black rounded-3xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-surface-muted/50 break-inside-avoid aspect-[4/3]`}
                                 >
                                     <img 
-                                        src={photo.image_url} 
+                                        src={photo.type === 'youtube' ? getYoutubeThumbnail(photo.youtube_url) : photo.image_url} 
                                         alt={photo.title || albumTitle} 
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                                     />
+                                    
+                                    {photo.type === 'youtube' && (
+                                        <div className="absolute inset-0 flex items-center justify-center z-10">
+                                            <div className="bg-red-600/90 text-white rounded-full p-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                                <IconVideo size={32} />
+                                            </div>
+                                        </div>
+                                    )}
                                     
                                     {/* Overlay Gradient */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -110,11 +131,25 @@ export default function GaleriDetail({ gallery }) {
                             className="max-w-5xl w-full flex flex-col items-center"
                             onClick={(e) => e.stopPropagation()} // Prevent click from closing when clicking on image
                         >
-                            <img 
-                                src={selectedImage.image_url} 
-                                alt={selectedImage.title || albumTitle}
-                                className="max-h-[75vh] w-auto object-contain rounded-lg shadow-2xl"
-                            />
+                            {selectedImage.type === 'youtube' ? (
+                                <div className="w-full aspect-video rounded-lg shadow-2xl overflow-hidden bg-black">
+                                    <iframe 
+                                        width="100%" 
+                                        height="100%" 
+                                        src={`https://www.youtube.com/embed/${getYoutubeId(selectedImage.youtube_url)}?autoplay=1`}
+                                        title={selectedImage.title || albumTitle} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            ) : (
+                                <img 
+                                    src={selectedImage.image_url} 
+                                    alt={selectedImage.title || albumTitle}
+                                    className="max-h-[75vh] w-auto object-contain rounded-lg shadow-2xl"
+                                />
+                            )}
                             
                             <div className="mt-6 text-center max-w-3xl">
                                 <h3 className="text-white text-2xl font-bold mb-3">
