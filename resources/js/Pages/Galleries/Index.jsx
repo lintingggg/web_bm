@@ -38,19 +38,17 @@ export default function GalleriesIndex({ galleries, filters, stats }) {
         event.preventDefault();
 
         if (editingItem) {
-            form.transform((data) => ({ ...data, _method: 'put' })).post(
-                route('galleries.update', editingItem.id),
-                {
-                    preserveScroll: true,
-                    forceFormData: true,
-                    onSuccess: () => {
-                        form.reset();
-                        form.setData('is_active', true);
-                        form.setData('use_watermark', false);
-                        setEditingItem(null);
-                    },
+            form.transform((data) => ({ ...data, _method: 'put' }));
+            form.post(route('galleries.update', editingItem.id), {
+                preserveScroll: true,
+                forceFormData: true,
+                onSuccess: () => {
+                    form.reset();
+                    form.setData('is_active', true);
+                    form.setData('use_watermark', false);
+                    setEditingItem(null);
                 },
-            );
+            });
             return;
         }
 

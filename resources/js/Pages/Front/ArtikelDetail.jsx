@@ -1,7 +1,7 @@
 import React from 'react';
 import FrontLayout from '@/Layouts/FrontLayout';
 import { Head, Link } from '@inertiajs/react';
-import { IconChevronLeft, IconShare, IconCalendarEvent, IconEye, IconTags, IconArrowUpRight, IconArrowRight } from '@tabler/icons-react';
+import { IconChevronLeft, IconShare, IconCalendarEvent, IconEye, IconTags, IconArrowUpRight, IconArrowRight, IconHome } from '@tabler/icons-react';
 
 export default function ArtikelDetail({ post, relatedPosts = [] }) {
 

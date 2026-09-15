@@ -209,7 +209,7 @@ export const MobileNavToggle = ({ isOpen, onClick, visible }) => {
 };
 
 export const NavbarLogo = ({ visible }) => {
-  const { web_setting } = usePage().props;
+  const { webSetting } = usePage().props;
 
   return (
     <a
@@ -217,7 +217,7 @@ export const NavbarLogo = ({ visible }) => {
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal"
     >
       <img
-        src={web_setting?.logo_url || "/assets/icon_bm.webp"}
+        src={webSetting?.logo_url || "/assets/icon_bm.webp"}
         alt="logo"
         className="w-8 h-auto"
       />
@@ -225,7 +225,7 @@ export const NavbarLogo = ({ visible }) => {
         "font-bold text-xl",
         visible ? "text-black dark:text-text-primary" : "text-white"
       )}>
-        {web_setting?.site_name || "Blue Murder"}
+        {webSetting?.site_title || "Blue Murder"}
       </span>
     </a>
   );

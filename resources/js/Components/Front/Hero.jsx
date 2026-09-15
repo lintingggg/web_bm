@@ -1,31 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function Hero({ 
-    title, 
-    subtitle, 
-    images = [] 
-}) {
+export default function Hero({ slides = [] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Otomatis mengganti gambar setiap 5 detik
     useEffect(() => {
-        if (images.length === 0) return;
+        if (slides.length === 0) return;
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
         }, 5000);
         return () => clearInterval(interval);
-    }, [images.length]);
+    }, [slides.length]);
+
+    const currentSlide = slides[currentIndex] || {};
+
+    // Helper to format title with blue text if it matches the default format
+    const renderTitle = (title) => {
+        if (!title) return null;
+        if (title.includes('Bersaudara Selamanya')) {
+            const parts = title.split('Bersaudara Selamanya');
+            return (
+                <>
+                    {parts[0]}<br/>
+                    <span className="text-blue-400">Bersaudara Selamanya</span>
+                    {parts[1]}
+                </>
+            );
+        }
+        return title;
+    };
 
     return (
         <div className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
             {/* Background Slideshow */}
             <div className="absolute inset-0 w-full h-full">
                 <AnimatePresence mode="popLayout">
-                    {images.length > 0 ? (
+                    {slides.length > 0 ? (
                         <motion.img
                             key={currentIndex}
-                            src={images[currentIndex]}
+                            src={currentSlide.image}
                             alt={`Hero Background ${currentIndex + 1}`}
                             initial={{ opacity: 0, scale: 1.05 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -43,25 +57,26 @@ export default function Hero({
 
             {/* Teks Konten */}
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-                <motion.h1 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-6 max-w-5xl leading-tight drop-shadow-lg"
-                >
-                    {title}
-                </motion.h1>
-
-                {subtitle && (
-                    <motion.p 
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentIndex} // Re-animate when index changes
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-lg md:text-2xl text-slate-200 mb-10 max-w-3xl leading-relaxed drop-shadow-md"
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.5 }}
+                        className="flex flex-col items-center"
                     >
-                        {subtitle}
-                    </motion.p>
-                )}
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-6 max-w-5xl leading-tight drop-shadow-lg">
+                            {renderTitle(currentSlide.title)}
+                        </h1>
+
+                        {currentSlide.subtitle && (
+                            <p className="text-lg md:text-2xl text-slate-200 mb-10 max-w-3xl leading-relaxed drop-shadow-md">
+                                {currentSlide.subtitle}
+                            </p>
+                        )}
+                    </motion.div>
+                </AnimatePresence>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -78,9 +93,9 @@ export default function Hero({
             </div>
 
             {/* Indikator Titik (Dots) opsional */}
-            {images.length > 1 && (
+            {slides.length > 1 && (
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-20">
-                    {images.map((_, idx) => (
+                    {slides.map((_, idx) => (
                         <button
                             key={idx}
                             onClick={() => setCurrentIndex(idx)}

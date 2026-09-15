@@ -3,8 +3,8 @@ import FrontLayout from '@/Layouts/FrontLayout';
 import { Head, Link } from '@inertiajs/react';
 import { IconHome } from '@tabler/icons-react';
 
-export default function LogoBM({ page }) {
-    const pageTitle = page ? page.title : 'Logo BM';
+export default function LogoBM({ page, logo }) {
+    const pageTitle = logo?.title || page?.title || 'Logo BM';
 
     return (
         <FrontLayout title={pageTitle}>
@@ -24,28 +24,50 @@ export default function LogoBM({ page }) {
                     </div>
 
                     {/* Header Section */}
-                    <div className="mb-10">
+                    <div className="mb-10 text-center max-w-3xl mx-auto">
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
                             {pageTitle}
                         </h1>
-                        {/* description if needed */}
                     </div>
 
-                    {/* Main Content Box */}
-                    <div className="bg-white dark:bg-surface-muted rounded-2xl border border-gray-200 dark:border-surface-muted/50 p-8 md:p-12 shadow-sm min-h-[300px]">
-                        {page && page.content ? (
+                    {/* Image Section */}
+                    {logo?.image_url && (
+                        <div className="bg-white dark:bg-surface-muted rounded-2xl border border-gray-200 dark:border-surface-muted/50 p-8 shadow-sm mb-12 flex justify-center">
+                            <img 
+                                src={logo.image_url} 
+                                alt={pageTitle} 
+                                className="w-full max-w-2xl h-auto object-contain"
+                            />
+                        </div>
+                    )}
+
+                    {/* Description Section */}
+                    {logo?.description && (
+                        <div className="bg-white dark:bg-surface-muted rounded-2xl border border-gray-200 dark:border-surface-muted/50 p-8 md:p-12 shadow-sm mb-12">
+                            <div className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed text-center">
+                                <p className="text-lg whitespace-pre-wrap">{logo.description}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Additional Content from Page Module (if any) */}
+                    {page && page.content && (
+                        <div className="bg-white dark:bg-surface-muted rounded-2xl border border-gray-200 dark:border-surface-muted/50 p-8 md:p-12 shadow-sm">
                             <div 
                                 className="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed"
                                 dangerouslySetInnerHTML={{ __html: page.content }}
                             />
-                        ) : (
-                            <div className="flex items-center justify-center h-full min-h-[200px]">
-                                <p className="text-gray-500 dark:text-gray-400 text-lg">
-                                    (Data Belum Tersedia)
-                                </p>
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
+
+                    {/* Empty State */}
+                    {!page?.content && !logo && (
+                        <div className="py-20 flex items-center justify-center">
+                            <p className="text-gray-500 dark:text-gray-400 text-lg">
+                                Belum ada data logo BM.
+                            </p>
+                        </div>
+                    )}
 
                 </div>
             </div>

@@ -1,15 +1,16 @@
-﻿import { Link, router, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import {
     Activity,
     Bell,
     BookCopy,
+    CalendarDays,
     ChevronLeft,
     ChevronRight,
     FileClock,
     FolderKanban,
     GalleryHorizontal,
     Hash,
-    Image,
+    Image as ImageIcon,
     LayoutDashboard,
     ListTree,
     Mail,
@@ -88,9 +89,54 @@ const sidebarMenu = [
             },
             {
                 label: 'Gambar Management',
-                icon: Image,
+                icon: ImageIcon,
                 routeName: 'gallery-images.index',
                 active: ['gallery-images.*'],
+            },
+        ],
+    },
+    {
+        group: 'Hero Section',
+        items: [
+            {
+                label: 'Kelola Banner',
+                icon: GalleryHorizontal,
+                routeName: 'hero-sections.index',
+                active: ['hero-sections.*'],
+            },
+        ],
+    },
+    {
+        group: 'About Section',
+        items: [
+            {
+                label: 'Tentang Kami',
+                icon: ListTree,
+                routeName: 'about-sections.index',
+                active: ['about-sections.*'],
+            },
+            {
+                label: 'Struktur Organisasi',
+                icon: Users,
+                routeName: 'organization-structures.index',
+                active: ['organization-structures.*'],
+            },
+            {
+                label: 'Logo BM',
+                icon: ImageIcon,
+                routeName: 'bm-logos.index',
+                active: ['bm-logos.*'],
+            },
+        ],
+    },
+    {
+        group: 'Agenda',
+        items: [
+            {
+                label: 'Agenda Kegiatan',
+                icon: CalendarDays,
+                routeName: 'agendas.index',
+                active: ['agendas.*'],
             },
         ],
     },

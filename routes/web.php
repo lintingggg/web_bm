@@ -10,7 +10,10 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\GalleryImageController;
+use App\Http\Controllers\Admin\HeroSectionController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\OrganizationStructureController;
+use App\Http\Controllers\Admin\BmLogoController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
@@ -83,6 +86,23 @@ Route::middleware(['auth', 'verified', 'log.admin.activity'])->group(function ()
     Route::put('/galleries/{gallery}', [GalleryController::class, 'update'])->middleware('permission:galleries.update')->name('galleries.update');
     Route::delete('/galleries/{gallery}', [GalleryController::class, 'destroy'])->middleware('permission:galleries.delete')->name('galleries.destroy');
 
+    Route::get('/hero-sections', [HeroSectionController::class, 'index'])->middleware('permission:settings.web.view')->name('hero-sections.index');
+    Route::post('/hero-sections', [HeroSectionController::class, 'store'])->middleware('permission:settings.web.update')->name('hero-sections.store');
+    Route::put('/hero-sections/{heroSection}', [HeroSectionController::class, 'update'])->middleware('permission:settings.web.update')->name('hero-sections.update');
+    Route::delete('/hero-sections/{heroSection}', [HeroSectionController::class, 'destroy'])->middleware('permission:settings.web.update')->name('hero-sections.destroy');
+
+    // About Sections
+    Route::get('/about-sections', [\App\Http\Controllers\Admin\AboutSectionController::class, 'index'])->middleware('permission:settings.web.view')->name('about-sections.index');
+    Route::post('/about-sections', [\App\Http\Controllers\Admin\AboutSectionController::class, 'store'])->middleware('permission:settings.web.update')->name('about-sections.store');
+    Route::put('/about-sections/{aboutSection}', [\App\Http\Controllers\Admin\AboutSectionController::class, 'update'])->middleware('permission:settings.web.update')->name('about-sections.update');
+    Route::delete('/about-sections/{aboutSection}', [\App\Http\Controllers\Admin\AboutSectionController::class, 'destroy'])->middleware('permission:settings.web.update')->name('about-sections.destroy');
+
+    // Agendas
+    Route::get('/agendas', [\App\Http\Controllers\Admin\AgendaController::class, 'index'])->middleware('permission:settings.web.view')->name('agendas.index');
+    Route::post('/agendas', [\App\Http\Controllers\Admin\AgendaController::class, 'store'])->middleware('permission:settings.web.update')->name('agendas.store');
+    Route::put('/agendas/{agenda}', [\App\Http\Controllers\Admin\AgendaController::class, 'update'])->middleware('permission:settings.web.update')->name('agendas.update');
+    Route::delete('/agendas/{agenda}', [\App\Http\Controllers\Admin\AgendaController::class, 'destroy'])->middleware('permission:settings.web.update')->name('agendas.destroy');
+
     Route::get('/gallery-images', [GalleryImageController::class, 'index'])->middleware('permission:gallery-images.view')->name('gallery-images.index');
     Route::post('/gallery-images', [GalleryImageController::class, 'store'])->middleware('permission:gallery-images.create')->name('gallery-images.store');
     Route::put('/gallery-images/{galleryImage}', [GalleryImageController::class, 'update'])->middleware('permission:gallery-images.update')->name('gallery-images.update');
@@ -132,6 +152,11 @@ Route::middleware(['auth', 'verified', 'log.admin.activity'])->group(function ()
 });
 
 Route::middleware('auth')->group(function () {
+    Route::resource('hero-sections', HeroSectionController::class)->except(['create', 'show', 'edit']);
+    Route::resource('about-sections', AboutSectionController::class)->except(['create', 'show', 'edit']);
+    Route::resource('organization-structures', OrganizationStructureController::class)->except(['create', 'show', 'edit']);
+    Route::resource('bm-logos', BmLogoController::class)->except(['create', 'show', 'edit']);
+    Route::resource('agendas', AgendaController::class)->except(['create', 'show', 'edit']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

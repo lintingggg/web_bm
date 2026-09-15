@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IconChevronLeft, IconChevronRight, IconCalendarEvent, IconClock, IconMapPin, IconBrandWhatsapp } from '@tabler/icons-react';
 
-export default function Agenda() {
+export default function Agenda({ agendasProp = {} }) {
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -9,20 +9,7 @@ export default function Agenda() {
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     };
 
-    // Dummy data for agendas (set to tomorrow so it shows up in current month)
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    const agendas = {
-        [formatDateKey(tomorrow)]: [
-            {
-                id: 1,
-                title: 'Rapat Koordinasi Pengurus Harian',
-                time: '15:00 WIB',
-                location: 'Sekretariat UKMFT Blue Murder'
-            }
-        ],
-    };
+    const agendas = agendasProp;
 
     const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = (month, year) => {
