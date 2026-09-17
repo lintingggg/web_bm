@@ -61,6 +61,7 @@ export default function FrontFooter() {
                             <Link href="/profil/tentang-kami" className="text-slate-300 hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">Tentang Kami</Link>
                             <Link href="/profil/struktur-organisasi" className="text-slate-300 hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">Struktur Organisasi</Link>
                             <Link href="/profil/logo-bm" className="text-slate-300 hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">Logo BM</Link>
+                            <Link href="/profil/mars-bm" className="text-slate-300 hover:text-accent-orange focus-visible:text-accent-orange focus-visible:outline-none transition-colors">Mars BM</Link>
                         </div>
                     </div>
                 </div>

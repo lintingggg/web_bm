@@ -24,6 +24,7 @@ export default function FrontNavbar({ forceVisible = false }) {
         { name: "Tentang Kami", link: "/profil/tentang-kami" },
         { name: "Struktur Organisasi", link: "/profil/struktur-organisasi" },
         { name: "Logo BM", link: "/profil/logo-bm" },
+        { name: "Mars BM", link: "/profil/mars-bm" },
       ],
     },
     {

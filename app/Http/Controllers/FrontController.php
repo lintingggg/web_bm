@@ -112,6 +112,17 @@ class FrontController extends Controller
         ]);
     }
 
+
+
+    public function marsBm()
+    {
+        $marsBm = \App\Models\MarsBm::where('is_active', true)->first();
+
+        return Inertia::render('Front/Profil/MarsBm', [
+            'marsBm' => $marsBm,
+        ]);
+    }
+
     public function galeri()
     {
         $galleries = Gallery::where('is_active', true)

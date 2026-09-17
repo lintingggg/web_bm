@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TikTokEmbed, InstagramEmbed, YouTubeEmbed } from 'react-social-media-embed';
+import EmbedErrorBoundary from './EmbedErrorBoundary';
 
 export default function SocialMediaEmbed({ posts = [] }) {
     if (!posts || posts.length === 0) {
@@ -11,21 +12,46 @@ export default function SocialMediaEmbed({ posts = [] }) {
         switch (post.platform) {
             case 'tiktok':
                 return (
-                    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                        <TikTokEmbed url={post.url} width="100%" />
-                    </div>
+                    <EmbedErrorBoundary>
+                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                            <TikTokEmbed url={post.url} width="100%" />
+                        </div>
+                    </EmbedErrorBoundary>
                 );
-            case 'instagram':
+            case 'instagram': {
+                const match = post.url.match(/(https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel|tv)\/[^\/?#&]+)/);
+                const embedUrl = match ? `${match[1]}/embed` : null;
+
+                if (!embedUrl) {
+                    return (
+                        <div className="flex items-center justify-center h-[400px] w-full text-sm text-slate-500">
+                            URL Instagram tidak valid
+                        </div>
+                    );
+                }
+
                 return (
-                    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                        <InstagramEmbed url={post.url} width="100%" />
-                    </div>
+                    <EmbedErrorBoundary>
+                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%' }}>
+                            <iframe 
+                                src={embedUrl}
+                                className="w-[328px] max-w-full h-[400px] md:h-[450px] border rounded"
+                                frameBorder="0"
+                                scrolling="no"
+                                allowTransparency="true"
+                                allow="encrypted-media"
+                            ></iframe>
+                        </div>
+                    </EmbedErrorBoundary>
                 );
+            }
             case 'youtube':
                 return (
-                    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                        <YouTubeEmbed url={post.url} width="100%" />
-                    </div>
+                    <EmbedErrorBoundary>
+                        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                            <YouTubeEmbed url={post.url} width="100%" />
+                        </div>
+                    </EmbedErrorBoundary>
                 );
             default:
                 return null;

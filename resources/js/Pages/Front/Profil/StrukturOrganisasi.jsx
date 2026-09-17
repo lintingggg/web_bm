@@ -24,10 +24,11 @@ export default function StrukturOrganisasi({ page, structure }) {
                     </div>
 
                     {/* Header Section */}
-                    <div className="mb-10 text-center max-w-3xl mx-auto">
+                    <div className="mb-12 text-center max-w-3xl mx-auto">
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
                             {pageTitle}
                         </h1>
+                        <div className="w-24 h-1 bg-accent-primary mx-auto rounded-full mb-6"></div>
                         {structure?.periode && (
                             <div className="inline-block bg-accent-orange/10 text-accent-orange dark:bg-accent-orange/20 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
                                 {structure.periode}

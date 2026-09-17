@@ -24,10 +24,11 @@ export default function LogoBM({ page, logo }) {
                     </div>
 
                     {/* Header Section */}
-                    <div className="mb-10 text-center max-w-3xl mx-auto">
+                    <div className="mb-12 text-center max-w-3xl mx-auto">
                         <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
                             {pageTitle}
                         </h1>
+                        <div className="w-24 h-1 bg-accent-primary mx-auto rounded-full mb-6"></div>
                     </div>
 
                     {/* Image Section */}

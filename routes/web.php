@@ -35,6 +35,7 @@ Route::get('/galeri/{slug}', [FrontController::class, 'galeriDetail'])->name('ga
 Route::get('/profil/tentang-kami', [FrontController::class, 'tentangKami'])->name('profil.tentang');
 Route::get('/profil/struktur-organisasi', [FrontController::class, 'strukturOrganisasi'])->name('profil.struktur');
 Route::get('/profil/logo-bm', [FrontController::class, 'logoBM'])->name('profil.logo');
+Route::get('/profil/mars-bm', [FrontController::class, 'marsBm'])->name('profil.mars');
 
 Route::post('/contact/submit', [ContactFormController::class, 'store'])
     ->middleware(['throttle:contact-submission'])
@@ -163,8 +164,15 @@ Route::middleware(['auth', 'verified', 'log.admin.activity'])->group(function ()
 Route::middleware('auth')->group(function () {
     Route::resource('hero-sections', HeroSectionController::class)->except(['create', 'show', 'edit']);
     Route::resource('about-sections', AboutSectionController::class)->except(['create', 'show', 'edit']);
-    Route::resource('organization-structures', OrganizationStructureController::class)->except(['create', 'show', 'edit']);
-    Route::resource('bm-logos', BmLogoController::class)->except(['create', 'show', 'edit']);
+    Route::resource('organization-structures', App\Http\Controllers\Admin\OrganizationStructureController::class)->except(['create', 'show', 'edit']);
+    
+    // Mars BM
+    Route::get('/mars-bms', [App\Http\Controllers\Admin\MarsBmController::class, 'index'])->name('mars-bms.index')->middleware('permission:settings.web.view');
+    Route::post('/mars-bms', [App\Http\Controllers\Admin\MarsBmController::class, 'store'])->name('mars-bms.store')->middleware('permission:settings.web.update');
+    Route::delete('/mars-bms/{marsBm}/audio', [App\Http\Controllers\Admin\MarsBmController::class, 'destroyAudio'])->name('mars-bms.destroyAudio')->middleware('permission:settings.web.update');
+    Route::delete('/mars-bms/{marsBm}/cover', [App\Http\Controllers\Admin\MarsBmController::class, 'destroyCover'])->name('mars-bms.destroyCover')->middleware('permission:settings.web.update');
+
+    Route::resource('bm-logos', App\Http\Controllers\Admin\BmLogoController::class)->except(['create', 'show', 'edit']);
     Route::resource('agendas', AgendaController::class)->except(['create', 'show', 'edit']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
