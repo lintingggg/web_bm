@@ -13,6 +13,7 @@ class HashtagSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = \Faker\Factory::create();
         Hashtag::query()->delete();
 
         $baseTags = [
@@ -48,20 +49,20 @@ class HashtagSeeder extends Seeder
                 'name' => $name,
                 'slug' => Str::slug($name),
                 'description' => "Konten terkait topik {$name}.",
-                'views_count' => fake()->numberBetween(500 + ($index * 50), 15000),
+                'views_count' => $faker->numberBetween(500 + ($index * 50), 15000),
                 'is_active' => true,
             ]);
         }
 
         for ($i = 1; $i <= 75; $i++) {
-            $name = fake()->unique()->words(fake()->numberBetween(1, 3), true);
+            $name = $faker->unique()->words($faker->numberBetween(1, 3), true);
 
             Hashtag::query()->create([
                 'name' => Str::title($name),
                 'slug' => Str::slug($name)."-{$i}",
-                'description' => fake()->boolean(70) ? fake()->sentence() : null,
-                'views_count' => fake()->numberBetween(0, 9000),
-                'is_active' => fake()->boolean(88),
+                'description' => $faker->boolean(70) ? $faker->sentence() : null,
+                'views_count' => $faker->numberBetween(0, 9000),
+                'is_active' => $faker->boolean(88),
             ]);
         }
     }

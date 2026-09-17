@@ -162,8 +162,7 @@ Route::middleware(['auth', 'verified', 'log.admin.activity'])->group(function ()
 });
 
 Route::middleware('auth')->group(function () {
-    Route::resource('hero-sections', HeroSectionController::class)->except(['create', 'show', 'edit']);
-    Route::resource('about-sections', AboutSectionController::class)->except(['create', 'show', 'edit']);
+
     Route::resource('organization-structures', App\Http\Controllers\Admin\OrganizationStructureController::class)->except(['create', 'show', 'edit']);
     
     // Mars BM
@@ -173,7 +172,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/mars-bms/{marsBm}/cover', [App\Http\Controllers\Admin\MarsBmController::class, 'destroyCover'])->name('mars-bms.destroyCover')->middleware('permission:settings.web.update');
 
     Route::resource('bm-logos', App\Http\Controllers\Admin\BmLogoController::class)->except(['create', 'show', 'edit']);
-    Route::resource('agendas', AgendaController::class)->except(['create', 'show', 'edit']);
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
